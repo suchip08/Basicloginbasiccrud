@@ -4,86 +4,10 @@
 <html>
 <head>
     <title>Admin Login</title>
-
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .wrapper {
-            display: flex;
-            gap: 30px;
-        }
-
-        .card {
-            background: #ffffff;
-            padding: 25px 30px;
-            width: 320px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        h3 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        input {
-            width: 100%;
-            padding: 9px;
-            margin-top: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 18px;
-            border: none;
-            border-radius: 4px;
-            background: #4CAF50;
-            color: white;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #43a047;
-        }
-
-        .login button {
-            background: #2196F3;
-        }
-
-        .login button:hover {
-            background: #1e88e5;
-        }
-
-        .error {
-            color: red;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/simple.css">
 </head>
 <body>
+<%@ include file="includes/header.jsp" %>
 
 <div class="wrapper">
 
@@ -105,6 +29,22 @@
 
             <label>Address</label>
             <input type="text" name="address">
+
+            <label>Adhar</label>
+            <input type="text" name="adhar" placeholder="Enter adhar">
+            <small>If left blank: not provide</small>
+
+            <label>PAN No</label>
+            <input type="text" name="panNo" placeholder="Enter PAN">
+            <small>If left blank: not given</small>
+
+            <label>Age</label>
+            <input type="text" name="age" placeholder="Enter age">
+            <small>If left blank: not provide age</small>
+
+            <label>Height</label>
+            <input type="number" step="0.1" name="height" placeholder="Enter height">
+            <small>If left blank: 4.5</small>
 
             <button type="submit">Save</button>
         </form>
@@ -128,7 +68,31 @@
         <p class="error">${error}</p>
     </div>
 
+    <!-- Vehicle Quick Form -->
+    <div class="card">
+        <h3>Vehicle</h3>
+        <form action="/vehicles/save" method="post">
+            <label>Type</label>
+            <select name="type" required>
+                <option value="">Select type</option>
+                <option>2-wheeler</option>
+                <option>3-wheeler</option>
+                <option>4-wheeler</option>
+            </select>
+            <label>Owner Name</label>
+            <input type="text" name="ownerName" required>
+            <label>Owner Number</label>
+            <input type="text" name="ownerNumber" required>
+            <label>Owner Email</label>
+            <input type="email" name="ownerEmail">
+            <label>Vehicle No</label>
+            <input type="text" name="vehicleNo">
+            <button type="submit">Save Vehicle</button>
+        </form>
+    </div>
+
 </div>
 
+<%@ include file="includes/footer.jsp" %>
 </body>
 </html>

@@ -7,93 +7,22 @@
 <head>
 <meta charset="UTF-8">
 <title>View Users</title>
-
-<style>
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f4f6f9;
-        padding: 40px;
-        margin: 0;
-    }
-
-    h2 {
-        text-align: center;
-        margin-bottom: 25px;
-        color: #333;
-    }
-
-    .table-container {
-        max-width: 1000px;
-        margin: auto;
-        background: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        padding: 12px;
-        text-align: left;
-    }
-
-    th {
-        background: #4CAF50;
-        color: white;
-    }
-
-    tr:nth-child(even) {
-        background: #f9f9f9;
-    }
-
-    tr:hover {
-        background: #f1f1f1;
-    }
-
-    .actions a {
-        text-decoration: none;
-        padding: 6px 10px;
-        margin-right: 6px;
-        border-radius: 4px;
-        font-size: 14px;
-        color: white;
-    }
-
-    .edit {
-        background: #2196F3;
-    }
-
-    .edit:hover {
-        background: #1e88e5;
-    }
-
-    .delete {
-        background: #f44336;
-    }
-
-    .delete:hover {
-        background: #e53935;
-    }
-
-    .back {
-        display: inline-block;
-        margin-top: 20px;
-        text-decoration: none;
-        color: #4CAF50;
-        font-weight: bold;
-    }
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/simple.css">
 </head>
 
 <body>
+<%@ include file="includes/header.jsp" %>
 
 <h2>📋 User List</h2>
 
 <div class="table-container">
+
+    <form method="get" action="/users" style="display:flex;gap:10px;margin-bottom:12px;">
+        <input type="text" name="q" value="${q}" placeholder="Search by name">
+        <input type="hidden" name="size" value="${size}">
+        <button type="submit" class="btn-primary">Search</button>
+        <a class="back" href="/users">Clear</a>
+    </form>
 
     <table>
         <tr>
@@ -101,6 +30,12 @@
             <th>Phone</th>
             <th>Email</th>
             <th>Address</th>
+            <th>Adhar</th>
+            <th>PAN No</th>
+            <th>Age</th>
+            <th>Height</th>
+            <th>Filled By</th>
+            <th>Admin Id</th>
             <th>Actions</th>
         </tr>
 
@@ -110,9 +45,15 @@
                 <td>${user.phone}</td>
                 <td>${user.email}</td>
                 <td>${user.address}</td>
+                <td>${user.adhar}</td>
+                <td>${user.panNo}</td>
+                <td>${user.age}</td>
+                <td>${user.height}</td>
+                <td>${user.filledBy}</td>
+                <td>${user.addedByAdminId}</td>
                 <td class="actions">
-                    <a class="edit" href="/users/edit/${user.id}">Edit</a>
-                    <a class="delete"
+                    <a class="action-btn edit" href="/users/edit/${user.id}">Edit</a>
+                    <a class="action-btn delete"
                        href="/users/delete/${user.id}"
                        onclick="return confirm('Are you sure you want to delete this user?');">
                         Delete
@@ -128,9 +69,22 @@
         </c:if>
     </table>
 
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+        <div>Page ${page + 1} of ${totalPages}</div>
+        <div style="display:flex;gap:8px;">
+            <c:if test="${page > 0}">
+                <a class="back" href="/users?q=${q}&page=${page - 1}&size=${size}">⬅ Prev</a>
+            </c:if>
+            <c:if test="${page + 1 < totalPages}">
+                <a class="back" href="/users?q=${q}&page=${page + 1}&size=${size}">Next ➡</a>
+            </c:if>
+        </div>
+    </div>
+
     <a class="back" href="/admin/dashboard">⬅ Back to Dashboard</a>
 
 </div>
 
+<%@ include file="includes/footer.jsp" %>
 </body>
 </html>

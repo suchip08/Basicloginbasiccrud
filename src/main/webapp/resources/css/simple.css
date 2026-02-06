@@ -1,0 +1,31 @@
+/* Minimal site styles */
+body { font-family: Arial, Helvetica, sans-serif; background: #f4f6f9; margin: 0; color: #333; }
+.wrapper { display: flex; gap: 20px; justify-content: center; align-items: flex-start; padding: 24px; max-width: 1100px; margin: 0 auto; }
+.container { max-width: 1100px; margin: 24px auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.card { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+h1, h2, h3 { margin: 0 0 16px; text-align: center; color: #333; font-weight: 600; }
+label { display: block; margin-top: 10px; font-weight: bold; color: #555; }
+input, select, textarea { width: 100%; padding: 10px; margin-top: 6px; border: 1px solid #ccc; border-radius: 6px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: #2196F3; box-shadow: 0 0 0 3px rgba(33,150,243,0.15); }
+button { width: 100%; padding: 10px 12px; margin-top: 16px; border: none; border-radius: 6px; background: #4CAF50; color: #fff; font-weight: 600; cursor: pointer; }
+button:hover { background: #43a047; }
+.btn-primary { background: #2196F3; }
+.btn-primary:hover { background: #1e88e5; }
+.table-container { max-width: 1100px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+th { background: #4CAF50; color: white; }
+tr:nth-child(even) { background: #fafafa; }
+tr:hover { background: #f1f1f1; }
+.actions { display: flex; gap: 8px; justify-content: center; }
+.actions a, .action-btn { text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; color: white; }
+.edit { background: #2196F3; }
+.delete { background: #f44336; }
+.back { display: inline-block; margin-top: 16px; color: #2196F3; font-weight: 600; text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.header { background: #ffffff; border-bottom: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; }
+.nav { display: flex; gap: 14px; }
+.nav a { color: #2196F3; font-weight: 600; }
+.footer { background: #ffffff; border-top: 1px solid #e5e7eb; margin-top: 24px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; padding: 12px 20px; text-align: center; color: #777; }

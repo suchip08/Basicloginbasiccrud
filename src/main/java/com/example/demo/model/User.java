@@ -10,33 +10,53 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // MUST NOT BE NULL
     @Column(nullable = false)
     private String name;
 
-    // Default set in CONTROLLER
     @Column(nullable = false)
     private String phone;
 
-    // Default set in SERVICE
     @Column(nullable = false)
     private String email;
 
-    // Default set in MODEL
     @Column(nullable = false)
     private String address = "Address not added";
 
-    // ⭐ MODEL DEFAULT LOGIC
+    @Column(nullable = false)
+    private String adhar;
+
+    @Column(nullable = false)
+    private String panNo;
+
+    @Column(nullable = false)
+    private String age;
+
+    @Column(nullable = false)
+    private Double height = 4.5;
+
+    @Column(nullable = false)
+    private String filledBy;
+
+    private Long addedByAdminId;
+
     @PrePersist
     void applyModelDefaults() {
         if (address == null || address.trim().isEmpty()) {
             address = "Address not added";
         }
+        if (adhar == null || adhar.trim().isEmpty()) {
+            adhar = "not provide";
+        }
+        if (height == null || height <= 0) {
+            height = 4.5;
+        }
+        if (filledBy == null || filledBy.trim().isEmpty()) {
+            filledBy = "filled by self";
+        }
     }
     
-    // add in the model defalut
  @Column(nullable = false)
-   private String company="Compnay A#12";
+   private String company="Company A#12";
                
     // getters & setters
     public Long getId() { return id; }
@@ -54,7 +74,23 @@ public class User {
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
     
+    public String getAdhar() { return adhar; }
+    public void setAdhar(String adhar) { this.adhar = adhar; }
+
+    public String getPanNo() { return panNo; }
+    public void setPanNo(String panNo) { this.panNo = panNo; }
+
+    public String getAge() { return age; }
+    public void setAge(String age) { this.age = age; }
+
+    public Double getHeight() { return height; }
+    public void setHeight(Double height) { this.height = height; }
     
+    public String getFilledBy() { return filledBy; }
+    public void setFilledBy(String filledBy) { this.filledBy = filledBy; }
+    
+    public Long getAddedByAdminId() { return addedByAdminId; }
+    public void setAddedByAdminId(Long addedByAdminId) { this.addedByAdminId = addedByAdminId; }
 
     
 }

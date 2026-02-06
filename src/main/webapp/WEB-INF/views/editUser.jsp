@@ -4,10 +4,10 @@
 <html>
 <head>
     <title>Edit User</title>
-
-   
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/simple.css">
 </head>
 <body>
+<%@ include file="includes/header.jsp" %>
 
 <div class="container">
 
@@ -28,14 +28,33 @@
         <label>Address</label>
         <input type="text" name="address" value="${user.address}">
 
-        <button type="submit">Update User</button>
+        <label>Adhar</label>
+        <input type="text" name="adhar" value="${user.adhar}">
+
+        <label>PAN No</label>
+        <input type="text" name="panNo" value="${user.panNo}">
+
+        <label>Age</label>
+        <input type="text" name="age" value="${user.age}">
+
+        <label>Height</label>
+        <input type="number" step="0.1" name="height" value="${user.height}">
+
+        <label>Filled By</label>
+        <input type="text" value="${user.filledBy}" readonly>
+        
+        <label>Admin Id</label>
+        <input type="text" value="${user.addedByAdminId}" readonly>
+
+        <button type="submit" class="btn-primary">Update User</button>
     </form>
 
-<a href="${pageContext.request.contextPath}/admin/dashboard">⬅ Back to Admin Dashboard</a>
+<a class="back" href="${pageContext.request.contextPath}/admin/dashboard">⬅ Back to Admin Dashboard</a>
 
  
   
 </div>
 
+<%@ include file="includes/footer.jsp" %>
 </body>
 </html>

@@ -15,6 +15,18 @@ public class Admin {
 
     private String password;
 
+    @Column(nullable = false)
+    private String createdBy;
+    
+    private Long createdByAdminId;
+
+    @PrePersist
+    void applyDefaults() {
+        if (createdBy == null || createdBy.trim().isEmpty()) {
+            createdBy = "admin (self)";
+        }
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -23,4 +35,10 @@ public class Admin {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+    
+    public Long getCreatedByAdminId() { return createdByAdminId; }
+    public void setCreatedByAdminId(Long createdByAdminId) { this.createdByAdminId = createdByAdminId; }
 }

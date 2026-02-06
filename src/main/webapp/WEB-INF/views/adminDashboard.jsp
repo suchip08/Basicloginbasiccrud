@@ -5,59 +5,66 @@
 <head>
 <meta charset="UTF-8">
 <title>Admin Dashboard</title>
-
-<style>
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f4f6f9;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
-
-    .dashboard {
-        background: #ffffff;
-        padding: 30px 40px;
-        width: 350px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        text-align: center;
-    }
-
-    h2 {
-        margin-bottom: 25px;
-        color: #333;
-    }
-
-    .dashboard a {
-        display: block;
-        padding: 12px;
-        margin: 10px 0;
-        text-decoration: none;
-        background: #4CAF50;
-        color: white;
-        border-radius: 4px;
-        font-size: 16px;
-        transition: background 0.2s ease;
-    }
-
-    .dashboard a:hover {
-        background: #43a047;
-    }
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/simple.css">
 </head>
 
 <body>
+<%@ include file="includes/header.jsp" %>
 
-<div class="dashboard">
-    <h2>Admin Dashboard</h2>
-
-    <a href="/admin/add">➕ Add Admin</a>
-    <a href="/users/add">👤 Add User</a>
-    <a href="/users">📋 View Users</a>
+<div class="wrapper">
+    <div class="card" style="width:320px;">
+        <h2>Admin Dashboard</h2>
+        <a class="back" href="/admin/add">➕ Add Admin</a>
+        <a class="back" href="/users">📋 View Users</a>
+        <a class="back" href="/admin/list">🧑‍💼 View Admins</a>
+        <a class="back" href="/vehicles">🚘 View Vehicles</a>
+    </div>
+    <div class="card">
+        <h3>Quick Add User</h3>
+        <form action="/users/save" method="post">
+            <input type="hidden" name="source" value="ADMIN">
+            <label>Name</label>
+            <input type="text" name="name" required>
+            <label>Phone</label>
+            <input type="text" name="phone">
+            <label>Email</label>
+            <input type="email" name="email">
+            <label>Address</label>
+            <input type="text" name="address">
+            <label>Adhar</label>
+            <input type="text" name="adhar">
+            <label>PAN No</label>
+            <input type="text" name="panNo">
+            <label>Age</label>
+            <input type="text" name="age">
+            <label>Height</label>
+            <input type="number" step="0.1" name="height">
+            <button type="submit" class="btn-primary">Save User</button>
+        </form>
+    </div>
+    <div class="card">
+        <h3>Quick Add Vehicle</h3>
+        <form action="/vehicles/save" method="post">
+            <label>Type</label>
+            <select name="type" required>
+                <option value="">Select type</option>
+                <option>2-wheeler</option>
+                <option>3-wheeler</option>
+                <option>4-wheeler</option>
+            </select>
+            <label>Owner Name</label>
+            <input type="text" name="ownerName" required>
+            <label>Owner Number</label>
+            <input type="text" name="ownerNumber" required>
+            <label>Owner Email</label>
+            <input type="email" name="ownerEmail">
+            <label>Vehicle No</label>
+            <input type="text" name="vehicleNo">
+            <button type="submit" class="btn-primary">Save Vehicle</button>
+        </form>
+    </div>
 </div>
 
+<%@ include file="includes/footer.jsp" %>
 </body>
 </html>
