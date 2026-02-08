@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Admin;
 import com.example.demo.service.AdminService;
+import com.example.demo.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,9 @@ public class AdminController {
 
     @Autowired
     private AdminService service;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -61,14 +65,6 @@ public class AdminController {
 
     @PostMapping("/save")
     public String saveAdmin(Admin admin, HttpSession session) {
-        String adminUser = (String) session.getAttribute("ADMIN_USERNAME");
-        Long adminId = (Long) session.getAttribute("ADMIN_ID");
-        if (adminUser != null && !adminUser.isBlank()) {
-            admin.setCreatedBy("added by admin (" + adminUser + ")");
-        }
-        if (adminId != null) {
-            admin.setCreatedByAdminId(adminId);
-        }
         service.save(admin);
         return "redirect:/admin/login";
     }
@@ -86,7 +82,8 @@ public class AdminController {
     }
     
     @GetMapping("/dashboard")
-    public String dashboard() {
+    public String dashboard(Model model) {
+        model.addAttribute("invalidNameCount", userService.getInvalidNameCount());
         return "adminDashboard"; // make sure adminDashboard.jsp exists
     }
     
@@ -110,7 +107,6 @@ public class AdminController {
             Admin first = new Admin();
             first.setUsername(username);
             first.setPassword(password);
-            first.setCreatedBy("admin (self)");
             service.save(first);
             session.setAttribute("ADMIN_USERNAME", username);
             session.setAttribute("ADMIN_ID", first.getId());

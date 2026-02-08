@@ -14,7 +14,6 @@ public class UserController {
 
     @Autowired
     private UserService service;
-
     @GetMapping
     public String listUsers(Model model,
                             @RequestParam(defaultValue = "") String q,
@@ -86,6 +85,14 @@ public class UserController {
         if (user.getAge() == null || user.getAge().isBlank()) {
             user.setAge("not provide age");
         }
+        
+        // Preserve read-only fields
+        User existing = service.getUserById(user.getId());
+        if (existing != null) {
+             if (user.getFilledBy() == null) user.setFilledBy(existing.getFilledBy());
+             if (user.getAddedByAdminId() == null) user.setAddedByAdminId(existing.getAddedByAdminId());
+        }
+
         service.saveUser(user);
         return "redirect:/admin/dashboard"; // redirect back to dashboard
     }

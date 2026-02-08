@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,10 @@
     <!-- Public User Form -->
     <div class="card">
         <h3>Public User</h3>
+
+        <c:if test="${not empty registrationError}">
+            <div style="color: red; margin-bottom: 10px;">${registrationError}</div>
+        </c:if>
 
         <form action="/users/save" method="post">
             <input type="hidden" name="source" value="PUBLIC">
@@ -37,7 +42,7 @@
             <label>PAN No</label>
             <input type="text" name="panNo" placeholder="Enter PAN">
             <small>If left blank: not given</small>
-
+            
             <label>Age</label>
             <input type="text" name="age" placeholder="Enter age">
             <small>If left blank: not provide age</small>

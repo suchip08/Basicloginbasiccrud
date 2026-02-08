@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/simple.css">
  </head>
 <body>
-<%@ include file="includes/header.jsp" %>
 <div class="card">
     <h2>Saved Successfully</h2>
     <p>Your details have been saved.</p>

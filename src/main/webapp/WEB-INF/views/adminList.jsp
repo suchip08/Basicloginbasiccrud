@@ -21,15 +21,11 @@
     <table>
         <tr>
             <th>Username</th>
-            <th>Created By</th>
-            <th>Creator Admin Id</th>
             <th>Actions</th>
         </tr>
         <c:forEach var="admin" items="${admins}">
             <tr>
                 <td>${admin.username}</td>
-                <td>${admin.createdBy}</td>
-                <td>${admin.createdByAdminId}</td>
                 <td class="actions">
                     <a class="action-btn edit" href="/admin/edit/${admin.id}">Edit</a>
                     <a class="action-btn delete" href="/admin/delete/${admin.id}" onclick="return confirm('Delete this admin?');">Delete</a>
@@ -37,7 +33,7 @@
             </tr>
         </c:forEach>
         <c:if test="${empty admins}">
-            <tr><td colspan="4" style="text-align:center;">No admins found</td></tr>
+            <tr><td colspan="2" style="text-align:center;">No admins found</td></tr>
         </c:if>
     </table>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">

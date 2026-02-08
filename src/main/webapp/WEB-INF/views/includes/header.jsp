@@ -12,9 +12,4 @@
       </c:if>
     </nav>
   </div>
-  <c:if test="${not empty sessionScope.ADMIN_USERNAME}">
-    <div style="max-width:1100px;margin:0 auto;padding:0 20px 10px;color:#6b7280;">
-      Logged in as ${sessionScope.ADMIN_USERNAME}
-    </div>
-  </c:if>
 </div>

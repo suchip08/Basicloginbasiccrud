@@ -8,6 +8,6 @@ public class BasicLoginApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BasicLoginApplication.class, args);
-        System.out.println("Application started");
+        System.out.println("Application started basic crud ");
     }
 }

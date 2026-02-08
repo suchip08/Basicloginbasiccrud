@@ -35,10 +35,14 @@ package com.example.demo.service;
      }
  
      public org.springframework.data.domain.Page<User> findPaged(String q, int page, int size) {
-         org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
-         if (q != null && !q.trim().isEmpty()) {
-             return repo.findByNameContainingIgnoreCase(q.trim(), pageable);
-         }
-         return repo.findAll(pageable);
-     }
- }
+        org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
+        if (q != null && !q.trim().isEmpty()) {
+            return repo.findByNameContainingIgnoreCase(q.trim(), pageable);
+        }
+        return repo.findAll(pageable);
+    }
+    
+    public long getInvalidNameCount() {
+        return repo.countUsersWhoseNameContainsNumberOrSpecial();
+    }
+}
