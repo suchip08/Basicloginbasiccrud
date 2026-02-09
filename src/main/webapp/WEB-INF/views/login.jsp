@@ -48,7 +48,7 @@
             <small>If left blank: not provide age</small>
 
             <label>Height</label>
-            <input type="number" step="0.1" name="height" placeholder="Enter height">
+            <input type="text" name="height" placeholder="Enter height">
             <small>If left blank: 4.5</small>
 
             <button type="submit">Save</button>
@@ -77,6 +77,7 @@
     <div class="card">
         <h3>Vehicle</h3>
         <form action="/vehicles/save" method="post">
+            <input type="hidden" name="source" value="PUBLIC">
             <label>Type</label>
             <select name="type" required>
                 <option value="">Select type</option>

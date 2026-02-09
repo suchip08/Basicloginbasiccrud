@@ -1,57 +1,61 @@
-package com.example.demo.controller;
+package com.example.demo.controller; // Package declaration
 
-import com.example.demo.model.Vehicle;
-import com.example.demo.service.VehicleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import com.example.demo.model.Vehicle; // Import Vehicle model
+import com.example.demo.service.VehicleService; // Import VehicleService
+import org.springframework.beans.factory.annotation.Autowired; // Import Autowired
+import org.springframework.stereotype.Controller; // Import Controller
+import org.springframework.ui.Model; // Import Model
+import org.springframework.web.bind.annotation.*; // Import web annotations
 
-@Controller
-@RequestMapping("/vehicles")
+@Controller // Marks this class as a web controller
+@RequestMapping("/vehicles") // Base URL for vehicle-related actions
 public class VehicleController {
 
-    @Autowired
+    @Autowired // Injects the VehicleService
     private VehicleService service;
 
-    @GetMapping
+    @GetMapping // Maps GET requests to /vehicles
     public String list(Model model, jakarta.servlet.http.HttpSession session) {
-        if (session.getAttribute("ADMIN_USERNAME") == null) {
+        if (session.getAttribute("ADMIN_USERNAME") == null) { // Check for admin login
             return "redirect:/admin/login";
         }
-        model.addAttribute("vehicles", service.getAllVehicles());
-        return "vehicleList";
+        model.addAttribute("vehicles", service.getAllVehicles()); // Add vehicles to model
+        return "vehicleList"; // Return list view
     }
 
-    @GetMapping("/add")
+    @GetMapping("/add") // Maps GET requests to /vehicles/add
     public String addForm() {
-        return "addVehicle";
+        return "addVehicle"; // Return add vehicle form
     }
 
-    @PostMapping("/save")
-    public String save(Vehicle vehicle) {
+    @PostMapping("/save") // Maps POST requests to /vehicles/save
+    public String save(Vehicle vehicle, @RequestParam(required = false, defaultValue = "ADMIN") String source) {
         if (vehicle.getType() == null || vehicle.getType().trim().isEmpty()) {
-            vehicle.setType("none");
+            vehicle.setType("none"); // Default type if empty
         }
-        service.saveVehicle(vehicle);
-        return "redirect:/vehicles";
+        service.saveVehicle(vehicle); // Save vehicle
+        
+        if ("PUBLIC".equalsIgnoreCase(source)) {
+            return "success";
+        }
+        return "redirect:/vehicles"; // Redirect to list
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/edit/{id}") // Maps GET requests to /vehicles/edit/{id}
     public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("vehicle", service.getVehicleById(id));
-        return "editVehicle";
+        model.addAttribute("vehicle", service.getVehicleById(id)); // Fetch vehicle and add to model
+        return "editVehicle"; // Return edit view
     }
 
-    @PostMapping("/update")
+    @PostMapping("/update") // Maps POST requests to /vehicles/update
     public String update(@RequestParam Long id, Vehicle details) {
-        service.updateVehicle(id, details);
-        return "redirect:/vehicles";
+        service.updateVehicle(id, details); // Update vehicle details
+        return "redirect:/vehicles"; // Redirect to list
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/delete/{id}") // Maps GET requests to /vehicles/delete/{id}
     public String delete(@PathVariable Long id) {
-        service.deleteVehicle(id);
-        return "redirect:/vehicles";
+        service.deleteVehicle(id); // Delete vehicle
+        return "redirect:/vehicles"; // Redirect to list
     }
 }

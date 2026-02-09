@@ -1,10 +1,9 @@
-package com.example.demo.repository;
+package com.example.demo.repository; // Package declaration
 
-import com.example.demo.model.Vehicle;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.example.demo.model.Vehicle; // Import Vehicle model
+import org.springframework.data.jpa.repository.JpaRepository; // Import JpaRepository
 
+// Repository interface for Vehicle entity
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
-    Page<Vehicle> findByOwnerNameContainingIgnoreCaseOrVehicleNoContainingIgnoreCase(String ownerName, String vehicleNo, Pageable pageable);
+    // Inherits basic CRUD methods
 }

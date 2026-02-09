@@ -15,11 +15,6 @@
     <div class="card" style="width:320px;">
         <h2>Admin Dashboard</h2>
         
-        <div style="background-color: #ffe6e6; border: 1px solid #ffcccc; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
-            <strong>Data Quality Check:</strong><br>
-            Users with Invalid Names: <strong>${invalidNameCount}</strong>
-        </div>
-
         <a class="back" href="/admin/add">➕ Add Admin</a>
         <a class="back" href="/users">📋 View Users</a>
         <a class="back" href="/admin/list">🧑‍💼 View Admins</a>

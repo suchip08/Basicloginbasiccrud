@@ -1,16 +1,16 @@
-package com.example.demo.model;
+package com.example.demo.model; // Package declaration
 
-import jakarta.persistence.*;
+import jakarta.persistence.*; // Import JPA annotations
 
-@Entity
-@Table(name = "vehicles")
+@Entity // Database entity
+@Table(name = "vehicles") // Maps to 'vehicles' table
 public class Vehicle {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false) // Cannot be null
     private String type;
 
     @Column(nullable = false)
@@ -25,13 +25,14 @@ public class Vehicle {
     @Column(nullable = false)
     private String vehicleNo;
 
-    @PrePersist
+    @PrePersist // Set defaults before saving
     void applyDefaults() {
         if (ownerEmail == null || ownerEmail.trim().isEmpty()) {
             ownerEmail = "none";
         }
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

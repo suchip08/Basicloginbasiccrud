@@ -1,101 +1,86 @@
-package com.example.demo.controller;
+package com.example.demo.controller; // Package declaration
 
-import com.example.demo.model.User;
-import com.example.demo.service.UserService;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import com.example.demo.model.User; // Import User model
+import com.example.demo.service.UserService; // Import UserService
+import jakarta.servlet.http.HttpSession; // Import HttpSession for session management
+import org.springframework.beans.factory.annotation.Autowired; // Import Autowired for dependency injection
+import org.springframework.stereotype.Controller; // Import Controller annotation
+import org.springframework.ui.Model; // Import Model to pass data to views
+import org.springframework.web.bind.annotation.*; // Import web annotations
 
-@Controller
-@RequestMapping("/users")
+@Controller // Marks this class as a web controller
+@RequestMapping("/users") // Base URL for user-related actions
 public class UserController {
 
-    @Autowired
+    @Autowired // Injects the UserService bean
     private UserService service;
-    @GetMapping
+    
+    @GetMapping // Maps GET requests to /users (root of this controller)
     public String listUsers(Model model, HttpSession session) {
-        if (session.getAttribute("ADMIN_USERNAME") == null) {
-            return "redirect:/admin/login";
+        if (session.getAttribute("ADMIN_USERNAME") == null) { // Check if admin is logged in
+            return "redirect:/admin/login"; // Redirect if not logged in
         }
-        model.addAttribute("users", service.getAllUsers());
-        return "userList";
+        model.addAttribute("users", service.getAllUsers()); // Add all users to the model
+        return "userList"; // Return the user list view
     }
 
-    @GetMapping("/add")
+    @GetMapping("/add") // Maps GET requests to /users/add
     public String addUserForm() {
-        return "addUser";
+        return "addUser"; // Return the add user form view
     }
 
-    @PostMapping("/save")
+    @PostMapping("/save") // Maps POST requests to /users/save
     public String saveUser(User user, @RequestParam String source, HttpSession session) {
 
+        // Basic validation and default values
         if (user.getPhone() == null || user.getPhone().isBlank()) {
             user.setPhone("Not given phone number add by controlller");
         }
         if (user.getAge() == null || user.getAge().isBlank()) {
             user.setAge("not provide age");
         }
-//        if ("ADMIN".equals(source)) {
-//            String adminUser = (String) session.getAttribute("ADMIN_USERNAME");
-//            Long adminId = (Long) session.getAttribute("ADMIN_ID");
-//            if (adminUser != null && !adminUser.isBlank()) {
-//                user.setFilledBy("added by admin (" + adminUser + ")");
-//            } else {
-//                user.setFilledBy("added by admin");
-//            }
-//            if (adminId != null) {
-//                user.setAddedByAdminId(adminId);
-//            }
-//        } else {
-//            user.setFilledBy("filled by self");
-//        }
-
-        service.saveUser(user);
-        return "ADMIN".equals(source) ? "redirect:/users" : "success";
+        
+        // Set filledBy based on source
+        if ("ADMIN".equals(source)) {
+            String adminUser = (String) session.getAttribute("ADMIN_USERNAME");
+            user.setFilledBy("Added by Admin: " + (adminUser != null ? adminUser : "Unknown"));
+        } else {
+            user.setFilledBy("Public User");
+        }
+ 
+        service.saveUser(user); // Save the user to database
+        return "ADMIN".equals(source) ? "redirect:/users" : "success"; // Redirect based on source
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/edit/{id}") // Maps GET requests to /users/edit/{id}
     public String editUser(@PathVariable Long id, Model model) {
-        model.addAttribute("user", service.getUserById(id));
-        return "editUser";
+        model.addAttribute("user", service.getUserById(id)); // Fetch user and add to model
+        return "editUser"; // Return edit view
     }
 
-//    @PostMapping("/update")
-//    public String updateUser(User user) {
-//        service.saveUser(user);
-//        return "redirect:/users";
-//    }
-
-    @GetMapping("/delete/{id}")
+    @GetMapping("/delete/{id}") // Maps GET requests to /users/delete/{id}
     public String deleteUser(@PathVariable Long id) {
-        service.deleteUser(id);
-        return "redirect:/users";
+        service.deleteUser(id); // Delete user
+        return "redirect:/users"; // Redirect to list
     }
     
     
-    @PostMapping("/update")
+    @PostMapping("/update") // Maps POST requests to /users/update
     public String updateUser(User user) {
         if (user.getAge() == null || user.getAge().isBlank()) {
-            user.setAge("not provide age");
+            user.setAge("not provide age"); // Default value for age
         }
         
-        // Preserve read-only fields for update
+        // Preserve existing filledBy if possible, or set default
         User existing = service.getUserById(user.getId());
         if (existing != null) {
-            // Restore fields that are not in the form but required by DB
-            // 'company' has a default in class, but if we create new object it has default.
-            // If existing record has different value, we might want to keep it?
-            // Actually 'company' is hardcoded in class to "Company A#12", so new object has it.
-            // But if we want to be safe:
-            // user.setCompany(existing.getCompany()); // if getter exists
-             if (user.getFilledBy() == null) user.setFilledBy(existing.getFilledBy());
-             if (user.getAddedByAdminId() == null) user.setAddedByAdminId(existing.getAddedByAdminId());
+            user.setFilledBy(existing.getFilledBy());
+        } else {
+            user.setFilledBy("Unknown (Edit)");
         }
-
-        service.saveUser(user);
-        return "redirect:/users";
+        
+        service.saveUser(user); // Save/Update user
+        return "redirect:/users"; // Redirect to list
     }
 
 }

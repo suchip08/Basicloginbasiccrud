@@ -11,6 +11,7 @@
 <div class="container">
     <h2>Add Vehicle</h2>
     <form action="/vehicles/save" method="post">
+        <input type="hidden" name="source" value="ADMIN">
         <label>Type</label>
         <select name="type" required>
             <option value="">Select type</option>

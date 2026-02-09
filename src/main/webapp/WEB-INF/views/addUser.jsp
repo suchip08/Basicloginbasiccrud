@@ -41,7 +41,7 @@
         <small>If left blank: not provide age</small>
 
         <label>Height</label>
-        <input type="number" step="0.1" name="height" placeholder="Enter height">
+        <input type="text" name="height" placeholder="Enter height">
         <small>If left blank: 4.5</small>
 
         <button type="submit" class="btn-primary">Save User</button>

@@ -27,6 +27,7 @@
             <th>PAN No</th>
             <th>Age</th>
             <th>Height</th>
+            <th>Filled By</th>
             <th>Actions</th>
         </tr>
 
@@ -40,6 +41,7 @@
                 <td>${user.panNo}</td>
                 <td>${user.age}</td>
                 <td>${user.height}</td>
+                <td>${user.filledBy}</td>
                 <td class="actions">
                     <a class="action-btn edit" href="/users/edit/${user.id}">Edit</a>
                     <a class="action-btn delete"
@@ -53,7 +55,7 @@
 
         <c:if test="${empty users}">
             <tr>
-                <td colspan="9" style="text-align:center;">No users found</td>
+                <td colspan="10" style="text-align:center;">No users found</td>
             </tr>
         </c:if>
     </table>

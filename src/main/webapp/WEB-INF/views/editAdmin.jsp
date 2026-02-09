@@ -18,8 +18,6 @@
         <input type="password" name="password" value="${admin.password}" required>
         <label>Created By</label>
         <input type="text" value="${admin.createdBy}" readonly>
-        <label>Creator Admin Id</label>
-        <input type="text" value="${admin.createdByAdminId}" readonly>
         <button type="submit" class="btn-primary">Save</button>
     </form>
     <a class="back" href="/admin/list">⬅ Back to Admins</a>

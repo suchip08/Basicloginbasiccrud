@@ -39,7 +39,7 @@
         <input type="text" name="age" value="${user.age}">
 
         <label>Height</label>
-        <input type="number" step="0.1" name="height" value="${user.height}">
+        <input type="text" name="height" value="${user.height}">
 
         <button type="submit" class="btn-primary">Update User</button>
     </form>

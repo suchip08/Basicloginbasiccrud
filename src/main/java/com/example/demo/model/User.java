@@ -1,16 +1,16 @@
-package com.example.demo.model;
+package com.example.demo.model; // Package declaration
 
-import jakarta.persistence.*;
+import jakarta.persistence.*; // Import JPA annotations
 
-@Entity
-@Table(name = "users")
+@Entity // Marks this class as a database entity
+@Table(name = "users") // Maps this class to the 'users' table
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false) // Column cannot be null
     private String name;
 
     @Column(nullable = false)
@@ -20,7 +20,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String address = "Address not added";
+    private String address ;
 
     @Column(nullable = false)
     private String adhar;
@@ -32,15 +32,15 @@ public class User {
     private String age;
 
     @Column(nullable = false)
-    private Double height = 4.5;
+    private String height;
+    
+    @Column(nullable = false)
+    private String company="Company A#12"; // Default value for company
 
-    @Column(nullable = true)
+    @Column(name = "filled_by")
     private String filledBy;
 
-    @Column(nullable = true)
-    private Long addedByAdminId;
-
-    @PrePersist
+    @PrePersist // Runs before saving to DB to set defaults
     void applyModelDefaults() {
         if (address == null || address.trim().isEmpty()) {
             address = "Address not added";
@@ -48,18 +48,15 @@ public class User {
         if (adhar == null || adhar.trim().isEmpty()) {
             adhar = "not provide";
         }
-        if (height == null || height <= 0) {
-            height = 4.5;
+        if (height == null || height.trim().isEmpty()) {
+            height = "4.5";
         }
         if (filledBy == null || filledBy.trim().isEmpty()) {
-            filledBy = "user";
+            filledBy = "Self/Unknown";
         }
     }
     
- @Column(nullable = false)
-   private String company="Company A#12";
-               
-    // getters & setters
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -84,14 +81,9 @@ public class User {
     public String getAge() { return age; }
     public void setAge(String age) { this.age = age; }
 
-    public Double getHeight() { return height; }
-    public void setHeight(Double height) { this.height = height; }
-    
+    public String getHeight() { return height; }
+    public void setHeight(String height) { this.height = height; }
+
     public String getFilledBy() { return filledBy; }
     public void setFilledBy(String filledBy) { this.filledBy = filledBy; }
-    
-    public Long getAddedByAdminId() { return addedByAdminId; }
-    public void setAddedByAdminId(Long addedByAdminId) { this.addedByAdminId = addedByAdminId; }
-
-    
 }

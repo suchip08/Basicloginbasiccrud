@@ -1,37 +1,33 @@
-package com.example.demo.model;
+package com.example.demo.model; // Package declaration
 
-import jakarta.persistence.*;
+import jakarta.persistence.*; // Import JPA annotations for database mapping
 
-@Entity
-@Table(name = "admins")
+@Entity // Marks this class as a JPA entity (maps to a database table)
+@Table(name = "admins") // Specifies the name of the table in the database
 public class Admin {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Marks this field as the primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Configures auto-increment for the ID
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true) // Ensures username is unique in the database
     private String username;
 
-    private String password;
+    private String password; // Stores the password
 
-    @Column(nullable = true)
+    @Column(nullable = true) // Allows this column to be null
     private String createdBy;
 
-    @PrePersist
+    @PrePersist // Runs this method before saving to the database
     void applyDefaults() {
         if (createdBy == null || createdBy.trim().isEmpty()) {
-            createdBy = "admin";
+            createdBy = "admin"; // Default value if not provided
         }
     }
     
+    // Getters and Setters
     public String getCreatedBy() { return createdBy; }
     public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
-
-  
-    
-
-
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -41,7 +37,4 @@ public class Admin {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-
-  
-  
 }
