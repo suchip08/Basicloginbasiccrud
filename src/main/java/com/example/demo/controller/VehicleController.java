@@ -15,7 +15,10 @@ public class VehicleController {
     private VehicleService service;
 
     @GetMapping
-    public String list(Model model) {
+    public String list(Model model, jakarta.servlet.http.HttpSession session) {
+        if (session.getAttribute("ADMIN_USERNAME") == null) {
+            return "redirect:/admin/login";
+        }
         model.addAttribute("vehicles", service.getAllVehicles());
         return "vehicleList";
     }

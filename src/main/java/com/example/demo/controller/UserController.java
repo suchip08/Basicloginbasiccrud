@@ -15,7 +15,10 @@ public class UserController {
     @Autowired
     private UserService service;
     @GetMapping
-    public String listUsers(Model model) {
+    public String listUsers(Model model, HttpSession session) {
+        if (session.getAttribute("ADMIN_USERNAME") == null) {
+            return "redirect:/admin/login";
+        }
         model.addAttribute("users", service.getAllUsers());
         return "userList";
     }

@@ -44,7 +44,10 @@ public class AdminController {
     }
 
     @GetMapping("/list")
-    public String listAdmins(Model model) {
+    public String listAdmins(Model model, HttpSession session) {
+        if (session.getAttribute("ADMIN_USERNAME") == null) {
+            return "redirect:/admin/login";
+        }
         model.addAttribute("admins", service.findAll());
         return "adminList";
     }
@@ -74,7 +77,10 @@ public class AdminController {
     }
     
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
+    public String dashboard(Model model, HttpSession session) {
+        if (session.getAttribute("ADMIN_USERNAME") == null) {
+            return "redirect:/admin/login";
+        }
         model.addAttribute("invalidNameCount", userService.getInvalidNameCount());
         return "adminDashboard"; // make sure adminDashboard.jsp exists
     }
