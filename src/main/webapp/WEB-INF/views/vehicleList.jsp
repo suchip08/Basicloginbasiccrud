@@ -12,12 +12,7 @@
 <%@ include file="includes/header.jsp" %>
 <h2>Vehicles</h2>
 <div class="table-container">
-    <form method="get" action="/vehicles" style="display:flex;gap:10px;margin-bottom:12px;">
-        <input type="text" name="q" value="${q}" placeholder="Search owner or number">
-        <input type="hidden" name="size" value="${size}">
-        <button type="submit" class="btn-primary">Search</button>
-        <a class="back" href="/vehicles">Clear</a>
-    </form>
+
     <table>
         <tr>
             <th>Type</th>
@@ -44,17 +39,7 @@
             <tr><td colspan="6" style="text-align:center;">No vehicles found</td></tr>
         </c:if>
     </table>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
-        <div>Page ${page + 1} of ${totalPages}</div>
-        <div style="display:flex;gap:8px;">
-            <c:if test="${page > 0}">
-                <a class="back" href="/vehicles?q=${q}&page=${page - 1}&size=${size}">⬅ Prev</a>
-            </c:if>
-            <c:if test="${page + 1 < totalPages}">
-                <a class="back" href="/vehicles?q=${q}&page=${page + 1}&size=${size}">Next ➡</a>
-            </c:if>
-        </div>
-    </div>
+    
     <a class="back" href="/admin/dashboard">⬅ Back to Dashboard</a>
 </div>
 <%@ include file="includes/footer.jsp" %>

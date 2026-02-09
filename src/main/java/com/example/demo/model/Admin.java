@@ -15,6 +15,19 @@ public class Admin {
 
     private String password;
 
+    @Column(nullable = true)
+    private String createdBy;
+
+    @PrePersist
+    void applyDefaults() {
+        if (createdBy == null || createdBy.trim().isEmpty()) {
+            createdBy = "admin";
+        }
+    }
+    
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+
   
     
 

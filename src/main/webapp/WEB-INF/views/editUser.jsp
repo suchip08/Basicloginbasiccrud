@@ -41,12 +41,6 @@
         <label>Height</label>
         <input type="number" step="0.1" name="height" value="${user.height}">
 
-        <label>Filled By</label>
-        <input type="text" value="${user.filledBy}" readonly>
-        
-        <label>Admin Id</label>
-        <input type="text" value="${user.addedByAdminId}" readonly>
-
         <button type="submit" class="btn-primary">Update User</button>
     </form>
 

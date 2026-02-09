@@ -44,16 +44,8 @@ public class AdminController {
     }
 
     @GetMapping("/list")
-    public String listAdmins(Model model,
-                             @RequestParam(defaultValue = "") String q,
-                             @RequestParam(defaultValue = "0") int page,
-                             @RequestParam(defaultValue = "10") int size) {
-        org.springframework.data.domain.Page<Admin> p = service.findPaged(q, page, size);
-        model.addAttribute("admins", p.getContent());
-        model.addAttribute("page", page);
-        model.addAttribute("totalPages", p.getTotalPages());
-        model.addAttribute("q", q);
-        model.addAttribute("size", size);
+    public String listAdmins(Model model) {
+        model.addAttribute("admins", service.findAll());
         return "adminList";
     }
 

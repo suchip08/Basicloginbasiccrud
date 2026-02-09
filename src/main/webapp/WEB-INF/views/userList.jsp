@@ -17,13 +17,6 @@
 
 <div class="table-container">
 
-    <form method="get" action="/users" style="display:flex;gap:10px;margin-bottom:12px;">
-        <input type="text" name="q" value="${q}" placeholder="Search by name">
-        <input type="hidden" name="size" value="${size}">
-        <button type="submit" class="btn-primary">Search</button>
-        <a class="back" href="/users">Clear</a>
-    </form>
-
     <table>
         <tr>
             <th>Name</th>
@@ -34,8 +27,6 @@
             <th>PAN No</th>
             <th>Age</th>
             <th>Height</th>
-            <th>Filled By</th>
-            <th>Admin Id</th>
             <th>Actions</th>
         </tr>
 
@@ -49,8 +40,6 @@
                 <td>${user.panNo}</td>
                 <td>${user.age}</td>
                 <td>${user.height}</td>
-                <td>${user.filledBy}</td>
-                <td>${user.addedByAdminId}</td>
                 <td class="actions">
                     <a class="action-btn edit" href="/users/edit/${user.id}">Edit</a>
                     <a class="action-btn delete"
@@ -64,22 +53,10 @@
 
         <c:if test="${empty users}">
             <tr>
-                <td colspan="5" style="text-align:center;">No users found</td>
+                <td colspan="9" style="text-align:center;">No users found</td>
             </tr>
         </c:if>
     </table>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
-        <div>Page ${page + 1} of ${totalPages}</div>
-        <div style="display:flex;gap:8px;">
-            <c:if test="${page > 0}">
-                <a class="back" href="/users?q=${q}&page=${page - 1}&size=${size}">⬅ Prev</a>
-            </c:if>
-            <c:if test="${page + 1 < totalPages}">
-                <a class="back" href="/users?q=${q}&page=${page + 1}&size=${size}">Next ➡</a>
-            </c:if>
-        </div>
-    </div>
 
     <a class="back" href="/admin/dashboard">⬅ Back to Dashboard</a>
 

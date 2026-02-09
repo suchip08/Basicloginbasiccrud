@@ -11,4 +11,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     @Query(value = "SELECT COUNT(*) FROM users WHERE name REGEXP '[0-9]|[^A-Za-z0-9 ]'", nativeQuery = true) 
     long countUsersWhoseNameContainsNumberOrSpecial();
+    
 }

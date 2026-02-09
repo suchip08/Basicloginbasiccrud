@@ -34,9 +34,10 @@ public class User {
     @Column(nullable = false)
     private Double height = 4.5;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String filledBy;
 
+    @Column(nullable = true)
     private Long addedByAdminId;
 
     @PrePersist
@@ -51,7 +52,7 @@ public class User {
             height = 4.5;
         }
         if (filledBy == null || filledBy.trim().isEmpty()) {
-            filledBy = "filled by self";
+            filledBy = "user";
         }
     }
     

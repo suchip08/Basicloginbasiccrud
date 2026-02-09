@@ -15,16 +15,8 @@ public class UserController {
     @Autowired
     private UserService service;
     @GetMapping
-    public String listUsers(Model model,
-                            @RequestParam(defaultValue = "") String q,
-                            @RequestParam(defaultValue = "0") int page,
-                            @RequestParam(defaultValue = "10") int size) {
-        org.springframework.data.domain.Page<User> p = service.findPaged(q, page, size);
-        model.addAttribute("users", p.getContent());
-        model.addAttribute("page", page);
-        model.addAttribute("totalPages", p.getTotalPages());
-        model.addAttribute("q", q);
-        model.addAttribute("size", size);
+    public String listUsers(Model model) {
+        model.addAttribute("users", service.getAllUsers());
         return "userList";
     }
 
@@ -42,20 +34,20 @@ public class UserController {
         if (user.getAge() == null || user.getAge().isBlank()) {
             user.setAge("not provide age");
         }
-        if ("ADMIN".equals(source)) {
-            String adminUser = (String) session.getAttribute("ADMIN_USERNAME");
-            Long adminId = (Long) session.getAttribute("ADMIN_ID");
-            if (adminUser != null && !adminUser.isBlank()) {
-                user.setFilledBy("added by admin (" + adminUser + ")");
-            } else {
-                user.setFilledBy("added by admin");
-            }
-            if (adminId != null) {
-                user.setAddedByAdminId(adminId);
-            }
-        } else {
-            user.setFilledBy("filled by self");
-        }
+//        if ("ADMIN".equals(source)) {
+//            String adminUser = (String) session.getAttribute("ADMIN_USERNAME");
+//            Long adminId = (Long) session.getAttribute("ADMIN_ID");
+//            if (adminUser != null && !adminUser.isBlank()) {
+//                user.setFilledBy("added by admin (" + adminUser + ")");
+//            } else {
+//                user.setFilledBy("added by admin");
+//            }
+//            if (adminId != null) {
+//                user.setAddedByAdminId(adminId);
+//            }
+//        } else {
+//            user.setFilledBy("filled by self");
+//        }
 
         service.saveUser(user);
         return "ADMIN".equals(source) ? "redirect:/users" : "success";
@@ -86,15 +78,21 @@ public class UserController {
             user.setAge("not provide age");
         }
         
-        // Preserve read-only fields
+        // Preserve read-only fields for update
         User existing = service.getUserById(user.getId());
         if (existing != null) {
+            // Restore fields that are not in the form but required by DB
+            // 'company' has a default in class, but if we create new object it has default.
+            // If existing record has different value, we might want to keep it?
+            // Actually 'company' is hardcoded in class to "Company A#12", so new object has it.
+            // But if we want to be safe:
+            // user.setCompany(existing.getCompany()); // if getter exists
              if (user.getFilledBy() == null) user.setFilledBy(existing.getFilledBy());
              if (user.getAddedByAdminId() == null) user.setAddedByAdminId(existing.getAddedByAdminId());
         }
 
         service.saveUser(user);
-        return "redirect:/admin/dashboard"; // redirect back to dashboard
+        return "redirect:/users";
     }
 
 }

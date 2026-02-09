@@ -15,16 +15,8 @@ public class VehicleController {
     private VehicleService service;
 
     @GetMapping
-    public String list(Model model,
-                       @RequestParam(defaultValue = "") String q,
-                       @RequestParam(defaultValue = "0") int page,
-                       @RequestParam(defaultValue = "10") int size) {
-        org.springframework.data.domain.Page<Vehicle> p = service.findPaged(q, page, size);
-        model.addAttribute("vehicles", p.getContent());
-        model.addAttribute("page", page);
-        model.addAttribute("totalPages", p.getTotalPages());
-        model.addAttribute("q", q);
-        model.addAttribute("size", size);
+    public String list(Model model) {
+        model.addAttribute("vehicles", service.getAllVehicles());
         return "vehicleList";
     }
 
