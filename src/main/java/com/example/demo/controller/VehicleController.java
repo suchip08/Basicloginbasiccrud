@@ -1,61 +1,111 @@
-package com.example.demo.controller; // Package declaration
+package com.example.demo.controller;
 
-import com.example.demo.model.Vehicle; // Import Vehicle model
-import com.example.demo.service.VehicleService; // Import VehicleService
-import org.springframework.beans.factory.annotation.Autowired; // Import Autowired
-import org.springframework.stereotype.Controller; // Import Controller
-import org.springframework.ui.Model; // Import Model
-import org.springframework.web.bind.annotation.*; // Import web annotations
+import com.example.demo.model.Vehicle;
+import com.example.demo.service.VehicleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-@Controller // Marks this class as a web controller
-@RequestMapping("/vehicles") // Base URL for vehicle-related actions
+/**
+ * VehicleController manages web requests related to Vehicles.
+ * It connects the web pages (JSP) with the backend service.
+ * 
+ * @Controller: Defines this class as a Spring MVC Controller.
+ * @RequestMapping: Sets the base URL for all methods to "/vehicles".
+ */
+@Controller
+@RequestMapping("/vehicles")
 public class VehicleController {
 
-    @Autowired // Injects the VehicleService
+    /**
+     * @Autowired: Injects the VehicleService so we can use its methods.
+     */
+    @Autowired
     private VehicleService service;
 
-    @GetMapping // Maps GET requests to /vehicles
+    /**
+     * Shows the list of all vehicles.
+     * URL: /vehicles
+     * 
+     * @param model: Used to pass the list of vehicles to the JSP.
+     * @param session: Used to check if the admin is logged in.
+     */
+    @GetMapping
     public String list(Model model, jakarta.servlet.http.HttpSession session) {
-        if (session.getAttribute("ADMIN_USERNAME") == null) { // Check for admin login
+        // Security Check: Only allow access if ADMIN_USERNAME is in the session
+        if (session.getAttribute("ADMIN_USERNAME") == null) {
             return "redirect:/admin/login";
         }
-        model.addAttribute("vehicles", service.getAllVehicles()); // Add vehicles to model
-        return "vehicleList"; // Return list view
-    }
-
-    @GetMapping("/add") // Maps GET requests to /vehicles/add
-    public String addForm() {
-        return "addVehicle"; // Return add vehicle form
-    }
-
-    @PostMapping("/save") // Maps POST requests to /vehicles/save
-    public String save(Vehicle vehicle, @RequestParam(required = false, defaultValue = "ADMIN") String source) {
-        if (vehicle.getType() == null || vehicle.getType().trim().isEmpty()) {
-            vehicle.setType("none"); // Default type if empty
-        }
-        service.saveVehicle(vehicle); // Save vehicle
         
+        // Get all vehicles and add them to the model for the view
+        model.addAttribute("vehicles", service.getAllVehicles());
+        
+        return "vehicleList"; // Render vehicleList.jsp
+    }
+
+    /**
+     * Shows the form to add a new vehicle.
+     * URL: /vehicles/add
+     */
+    @GetMapping("/add")
+    public String addForm() {
+        return "addVehicle"; // Render addVehicle.jsp
+    }
+
+    /**
+     * Handles saving a new vehicle.
+     * URL: /vehicles/save (POST)
+     * 
+     * @param vehicle: The vehicle data from the form.
+     * @param source: A parameter to check if it's from "ADMIN" or "PUBLIC".
+     */
+    @PostMapping("/save")
+    public String save(Vehicle vehicle, @RequestParam(required = false, defaultValue = "ADMIN") String source) {
+        // Beginner Logic: Set a default type if none is provided
+        if (vehicle.getType() == null || vehicle.getType().trim().isEmpty()) {
+            vehicle.setType("none"); 
+        }
+        
+        // Save the vehicle using the service
+        service.saveVehicle(vehicle); 
+        
+        // Redirect logic: Public users go to success page, Admins go back to list
         if ("PUBLIC".equalsIgnoreCase(source)) {
             return "success";
         }
-        return "redirect:/vehicles"; // Redirect to list
+        return "redirect:/vehicles";
     }
 
-    @GetMapping("/edit/{id}") // Maps GET requests to /vehicles/edit/{id}
+    /**
+     * Shows the edit form for a specific vehicle.
+     * URL: /vehicles/edit/{id}
+     */
+    @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("vehicle", service.getVehicleById(id)); // Fetch vehicle and add to model
-        return "editVehicle"; // Return edit view
+        // Find vehicle by ID and add to model
+        model.addAttribute("vehicle", service.getVehicleById(id)); 
+        return "editVehicle"; // Render editVehicle.jsp
     }
 
-    @PostMapping("/update") // Maps POST requests to /vehicles/update
+    /**
+     * Handles updating an existing vehicle.
+     * URL: /vehicles/update (POST)
+     */
+    @PostMapping("/update")
     public String update(@RequestParam Long id, Vehicle details) {
-        service.updateVehicle(id, details); // Update vehicle details
-        return "redirect:/vehicles"; // Redirect to list
+        // Update the vehicle details via service
+        service.updateVehicle(id, details); 
+        return "redirect:/vehicles"; // Go back to the list
     }
 
-    @GetMapping("/delete/{id}") // Maps GET requests to /vehicles/delete/{id}
+    /**
+     * Deletes a vehicle.
+     * URL: /vehicles/delete/{id}
+     */
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-        service.deleteVehicle(id); // Delete vehicle
-        return "redirect:/vehicles"; // Redirect to list
+        service.deleteVehicle(id); // Delete the vehicle
+        return "redirect:/vehicles"; // Go back to the list
     }
 }

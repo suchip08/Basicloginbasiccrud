@@ -46,13 +46,13 @@ public class User {
             address = "Address not added";
         }
         if (adhar == null || adhar.trim().isEmpty()) {
-            adhar = "not provide";
+            adhar = "not provided";
         }
         if (height == null || height.trim().isEmpty()) {
             height = "4.5";
         }
         if (filledBy == null || filledBy.trim().isEmpty()) {
-            filledBy = "Self/Unknown";
+            filledBy = "Default";
         }
     }
     

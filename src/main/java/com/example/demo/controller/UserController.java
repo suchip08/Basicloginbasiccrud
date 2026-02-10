@@ -1,86 +1,136 @@
-package com.example.demo.controller; // Package declaration
+package com.example.demo.controller;
 
-import com.example.demo.model.User; // Import User model
-import com.example.demo.service.UserService; // Import UserService
-import jakarta.servlet.http.HttpSession; // Import HttpSession for session management
-import org.springframework.beans.factory.annotation.Autowired; // Import Autowired for dependency injection
-import org.springframework.stereotype.Controller; // Import Controller annotation
-import org.springframework.ui.Model; // Import Model to pass data to views
-import org.springframework.web.bind.annotation.*; // Import web annotations
+import com.example.demo.model.User;
+import com.example.demo.service.UserService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-@Controller // Marks this class as a web controller
-@RequestMapping("/users") // Base URL for user-related actions
+/**
+ * UserController handles all web requests related to Users.
+ * It acts as a bridge between the View (JSP pages) and the Service layer.
+ * 
+ * Annotations used:
+ * @Controller: Tells Spring this class is a Web Controller.
+ * @RequestMapping: Defines the base URL for all methods in this class (e.g., /users).
+ */
+@Controller
+@RequestMapping("/users")
 public class UserController {
 
-    @Autowired // Injects the UserService bean
+    /**
+     * @Autowired: Spring automatically injects the UserService instance here.
+     * We don't need to create it manually using 'new UserService()'.
+     */
+    @Autowired
     private UserService service;
     
-    @GetMapping // Maps GET requests to /users (root of this controller)
+    /**
+     * Displays the list of all users.
+     * URL: /users
+     * 
+     * @param model: Used to pass data from Controller to View (JSP).
+     * @param session: Used to check if the admin is logged in.
+     * @return: The name of the JSP file to render ("userList" or "login").
+     */
+    @GetMapping
     public String listUsers(Model model, HttpSession session) {
-        if (session.getAttribute("ADMIN_USERNAME") == null) { // Check if admin is logged in
-            return "redirect:/admin/login"; // Redirect if not logged in
+        // Security Check: Ensure only logged-in admins can see the list
+        if (session.getAttribute("ADMIN_USERNAME") == null) {
+            return "redirect:/admin/login"; // Redirect to login page if not logged in
         }
-        model.addAttribute("users", service.getAllUsers()); // Add all users to the model
-        return "userList"; // Return the user list view
+        
+        // Fetch all users from service and add them to the model
+        model.addAttribute("users", service.getAllUsers());
+        
+        return "userList"; // Opens userList.jsp
     }
 
-    @GetMapping("/add") // Maps GET requests to /users/add
+    /**
+     * Shows the form to add a new user.
+     * URL: /users/add
+     */
+    @GetMapping("/add")
     public String addUserForm() {
-        return "addUser"; // Return the add user form view
+        return "addUser"; // Opens addUser.jsp
     }
 
-    @PostMapping("/save") // Maps POST requests to /users/save
+    /**
+     * Handles the form submission to save a new user.
+     * URL: /users/save (POST request)
+     * 
+     * @param user: Spring automatically maps form fields to this User object.
+     * @param source: A hidden field in the form to know if it's from ADMIN or PUBLIC page.
+     * @param session: Used to check session attributes if needed.
+     */
+    @PostMapping("/save")
     public String saveUser(User user, @RequestParam String source, HttpSession session) {
-
-        // Basic validation and default values
-        if (user.getPhone() == null || user.getPhone().isBlank()) {
-            user.setPhone("Not given phone number add by controlller");
-        }
+        
+        // --- Beginner Note: Simple Validation Logic ---
+        // If the user didn't provide an age, set a default message.
         if (user.getAge() == null || user.getAge().isBlank()) {
             user.setAge("not provide age");
         }
+
+        // If the user didn't provide a phone number, set a default message.
+        if (user.getPhone() == null || user.getPhone().isBlank()) {
+            user.setPhone("Not given phone number");
+        }
+
+        // Call the service to save the user to the database
+        service.saveUser(user);
         
-        // Set filledBy based on source
+        // Logic: If Admin added the user, go back to the list.
+        // If a Public user added themselves, show a success page.
         if ("ADMIN".equals(source)) {
-            String adminUser = (String) session.getAttribute("ADMIN_USERNAME");
-            user.setFilledBy("Added by Admin: " + (adminUser != null ? adminUser : "Unknown"));
+            return "redirect:/users";
         } else {
-            user.setFilledBy("Public User");
+            return "success"; // Opens success.jsp
         }
- 
-        service.saveUser(user); // Save the user to database
-        return "ADMIN".equals(source) ? "redirect:/users" : "success"; // Redirect based on source
     }
 
-    @GetMapping("/edit/{id}") // Maps GET requests to /users/edit/{id}
+    /**
+     * Shows the form to edit an existing user.
+     * URL: /users/edit/{id} (e.g., /users/edit/5)
+     * 
+     * @param id: The ID from the URL path.
+     * @param model: Used to send the existing user data to the form.
+     */
+    @GetMapping("/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
-        model.addAttribute("user", service.getUserById(id)); // Fetch user and add to model
-        return "editUser"; // Return edit view
+        // Find the user by ID and send it to the view
+        User user = service.getUserById(id);
+        model.addAttribute("user", user);
+        return "editUser"; // Opens editUser.jsp
     }
 
-    @GetMapping("/delete/{id}") // Maps GET requests to /users/delete/{id}
+    /**
+     * Deletes a user by ID.
+     * URL: /users/delete/{id}
+     */
+    @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
-        service.deleteUser(id); // Delete user
-        return "redirect:/users"; // Redirect to list
+        service.deleteUser(id); // Call service to delete
+        return "redirect:/users"; // Redirect back to the list
     }
     
-    
-    @PostMapping("/update") // Maps POST requests to /users/update
+    /**
+     * Handles the update form submission.
+     * URL: /users/update (POST request)
+     */
+    @PostMapping("/update")
     public String updateUser(User user) {
+        // Simple check for age
         if (user.getAge() == null || user.getAge().isBlank()) {
-            user.setAge("not provide age"); // Default value for age
+            user.setAge("not provide age"); 
         }
         
-        // Preserve existing filledBy if possible, or set default
-        User existing = service.getUserById(user.getId());
-        if (existing != null) {
-            user.setFilledBy(existing.getFilledBy());
-        } else {
-            user.setFilledBy("Unknown (Edit)");
-        }
+        // Update the user details in the database
+        service.updateUser(user.getId(), user);
         
-        service.saveUser(user); // Save/Update user
-        return "redirect:/users"; // Redirect to list
+        return "redirect:/users"; // Go back to the list
     }
 
 }

@@ -15,9 +15,7 @@
     <div class="card" style="width:320px;">
         <h2>Admin Dashboard</h2>
         
-        <a class="back" href="/admin/add">➕ Add Admin</a>
         <a class="back" href="/users">📋 View Users</a>
-        <a class="back" href="/admin/list">🧑‍💼 View Admins</a>
         <a class="back" href="/vehicles">🚘 View Vehicles</a>
     </div>
     <div class="card">

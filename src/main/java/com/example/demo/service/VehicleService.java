@@ -1,27 +1,46 @@
-package com.example.demo.service; // Package declaration
+package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired; // Import Autowired
-import org.springframework.stereotype.Service; // Import Service annotation
-import com.example.demo.repository.VehicleRepository; // Import VehicleRepository
-import com.example.demo.model.Vehicle; // Import Vehicle model
-import java.util.List; // Import List
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.example.demo.repository.VehicleRepository;
+import com.example.demo.model.Vehicle;
+import java.util.List;
 
-@Service // Marks this class as a Service component
+/**
+ * VehicleService handles business logic for Vehicles.
+ * 
+ * @Service: Tells Spring to manage this class as a Service bean.
+ */
+@Service
 public class VehicleService {
     
-    @Autowired // Injects VehicleRepository
+    /**
+     * @Autowired: Injects the VehicleRepository for database access.
+     */
+    @Autowired
     private VehicleRepository vehicleRepository;
 
+    /**
+     * Gets all vehicles from the database.
+     */
     public List<Vehicle> getAllVehicles() {
-        return vehicleRepository.findAll(); // Get all vehicles
+        return vehicleRepository.findAll();
     }
 
+    /**
+     * Finds a vehicle by its ID.
+     */
     public Vehicle getVehicleById(Long id) {
-        return vehicleRepository.findById(id).orElse(null); // Get vehicle by ID
+        return vehicleRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Saves a new vehicle to the database.
+     * Adds default values for missing fields.
+     */
     public Vehicle saveVehicle(Vehicle vehicle) {
-        // Default value logic
+        // --- Beginner Logic: Default Values ---
+        
         if (vehicle.getVehicleNo() == null || vehicle.getVehicleNo().trim().isEmpty()) {
             vehicle.setVehicleNo("none");
         }
@@ -34,26 +53,36 @@ public class VehicleService {
         if (vehicle.getOwnerEmail() == null || vehicle.getOwnerEmail().trim().isEmpty()) {
             vehicle.setOwnerEmail("none");
         }
-        return vehicleRepository.save(vehicle); // Save vehicle
+        
+        return vehicleRepository.save(vehicle);
     }
 
+    /**
+     * Deletes a vehicle by ID.
+     */
     public String deleteVehicle(Long id) {
-        vehicleRepository.deleteById(id); // Delete vehicle
+        vehicleRepository.deleteById(id);
         return "Vehicle deleted successfully";
     }
 
+    /**
+     * Updates an existing vehicle's details.
+     */
     public Vehicle updateVehicle(Long id, Vehicle vehicleDetails) {
-        // Fetch existing vehicle
+        // Step 1: Find the existing vehicle
         Vehicle v = vehicleRepository.findById(id).orElse(null);
+        
+        // Step 2: If found, update its fields
         if (v != null) {
-            // Update fields
             v.setType(vehicleDetails.getType());
             v.setOwnerName(vehicleDetails.getOwnerName());
             v.setOwnerNumber(vehicleDetails.getOwnerNumber());
             v.setOwnerEmail(vehicleDetails.getOwnerEmail());
             v.setVehicleNo(vehicleDetails.getVehicleNo());
-            return vehicleRepository.save(v); // Save updated vehicle
+            
+            // Step 3: Save the changes
+            return vehicleRepository.save(v);
         }
-        return null;
+        return null; // Return null if not found
     }
 }
