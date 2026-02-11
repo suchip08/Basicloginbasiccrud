@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 
-/**
- * UserService contains the business logic for User operations.
- * It sits between the Controller and the Repository (Database).
- * 
- * @Service: Marks this class as a Service component in Spring.
- */
+///**
+// * UserService contains the business logic for User operations.
+// * It sits between the Controller and the Repository (Database).
+// * 
+// * @Service: Marks this class as a Service component in Spring.
+// */
 @Service
 public class UserService {
 
@@ -28,26 +28,27 @@ public class UserService {
      * @param user: The user object to save.
      * @return: The saved user object.
      */
-    public User saveUser(User user) {
+    public User saveUser(User users) {
         // --- Business Logic: Default Values ---
         
         // If email is missing, set a placeholder
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            user.setEmail("Email not provided");
+        if (users.getEmail() == null || users.getEmail().isBlank()) {
+            users.setEmail("Email not provided");
         }
         
         // If PAN number is missing, set a placeholder
-        if (user.getPanNo() == null || user.getPanNo().isBlank()) {
-            user.setPanNo("not given");
+        if (users.getPanNo() == null || users.getPanNo().isBlank()) {
+            users.setPanNo("not given");
         }
         
         // If Phone is missing, set a placeholder
-        if (user.getPhone() == null || user.getPhone().isBlank()) {
-            user.setPhone("Not provided");
+        if (users.getPhone() == null || users.getPhone().isBlank()) {
+            users.setPhone("Not provided");
+           
         }
         
         // Use the repository to save the data to the database table
-        return repo.save(user);
+        return repo.save(users);
     }
 
     /**
